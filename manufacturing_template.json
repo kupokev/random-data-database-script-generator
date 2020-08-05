@@ -1,0 +1,52 @@
+{
+  "database": [
+    {
+      "name": "ManufacturingTemplate",
+      "tables": [
+        {
+          "name": "Customer",
+          "schema": "dbo",
+          "recordCount": 100,
+          "columns": [
+            {
+              "name": "id",
+              "type": "int",
+              "nullable": false,
+              "identity": true
+            },
+            {
+              "name": "customer_name",
+              "type": "nvarchar(128)",
+              "nullable": true
+            },
+            {
+              "name": "customer_no",
+              "type": "nvarchar(16)",
+              "nullable": true
+            }
+          ]
+        },
+        {
+          "name": "Order",
+          "schema": "dbo",
+          "recordCount": 2500,
+          "columns": [
+            {
+              "name": "id",
+              "type": "int",
+              "nullable": false,
+              "identity": true
+            },
+            {
+              "name": "customer_no",
+              "type": "nvarchar(16)",
+              "nullable": true,
+              "generateFromTable": "Customer",
+              "generateFromColumn": "customer_no"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30104.148
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RDSGConsole", "RDSGConsole\RDSGConsole.csproj", "{37EE312F-A1FD-4479-BB2A-D94D81EE2444}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataGenerator", "DataGenerator\DataGenerator.csproj", "{650E5D0D-2459-4EF4-B39D-6846410EEF10}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B2AC9835-5472-495C-8E37-C0466734D396}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templates", "Templates", "{A77DE776-A2FB-4F24-AC89-A2A736375348}"
+	ProjectSection(SolutionItems) = preProject
+		manufacturing_template.json = manufacturing_template.json
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{37EE312F-A1FD-4479-BB2A-D94D81EE2444}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37EE312F-A1FD-4479-BB2A-D94D81EE2444}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37EE312F-A1FD-4479-BB2A-D94D81EE2444}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37EE312F-A1FD-4479-BB2A-D94D81EE2444}.Release|Any CPU.Build.0 = Release|Any CPU
+		{650E5D0D-2459-4EF4-B39D-6846410EEF10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{650E5D0D-2459-4EF4-B39D-6846410EEF10}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{650E5D0D-2459-4EF4-B39D-6846410EEF10}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{650E5D0D-2459-4EF4-B39D-6846410EEF10}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A77DE776-A2FB-4F24-AC89-A2A736375348} = {B2AC9835-5472-495C-8E37-C0466734D396}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F20702AE-63AE-46D4-A746-7C82F9CB2A24}
+	EndGlobalSection
+EndGlobal
