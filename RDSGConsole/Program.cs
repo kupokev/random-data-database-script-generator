@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using RDSGConsole.Interfaces;
 using RDSGConsole.Services;
 using System;
+using System.Threading;
 
 namespace RDSGConsole
 {
@@ -17,10 +18,14 @@ namespace RDSGConsole
                 .AddScoped<IMainService, MainService>()
                 .BuildServiceProvider();
 
+            // Define the cancellation token.
+            CancellationTokenSource source = new CancellationTokenSource();
+            CancellationToken token = source.Token;
+
             // Start program
             var service = serviceProvider.GetService<IMainService>();
 
-            service.Start();
+            service.Start(token);
         }
     }
 }

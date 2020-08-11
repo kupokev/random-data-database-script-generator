@@ -16,6 +16,7 @@ namespace DataGenerator
             // Services
             services.AddScoped<IObjectGeneratorService, ObjectGeneratorService>();
 
+
             return services;
         }
     }

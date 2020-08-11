@@ -4,15 +4,16 @@ using System;
 using System.Collections.Generic;
 using System.Json;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace DataGenerator.Services
 {
     public class ObjectGeneratorService : IObjectGeneratorService
     {
-        public async Task<DatabaseDto> Convert(JsonValue json)
+        public async Task<Database> Convert(JsonValue json, CancellationToken cancellationToken)
         {
-            var database = new DatabaseDto();
+            var database = new Database();
 
             if (json.ContainsKey("database"))
             {
