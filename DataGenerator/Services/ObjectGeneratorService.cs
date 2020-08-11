@@ -1,5 +1,6 @@
 ﻿using DataGenerator.Interfaces;
 using DataGenerator.Models;
+using DataGenerator.Models.Extensions;
 using System.IO;
 using System.Text;
 using System.Text.Json;
@@ -12,16 +13,21 @@ namespace DataGenerator.Services
     {
         public async Task<Database> Convert(string json, CancellationToken cancellationToken)
         {
+            var database = new Database();
+
             var options = new JsonSerializerOptions
             {
                 IgnoreNullValues = true
             };
 
             byte[] byteArray = Encoding.UTF8.GetBytes(json);
+
             using(var stream = new MemoryStream(byteArray))
             {
-                return await JsonSerializer.DeserializeAsync<Database>(stream, options, cancellationToken);
+                database = await JsonSerializer.DeserializeAsync<Database>(stream, options, cancellationToken);
             }
+
+            return database.DetermineDependencyOrder();
         }
     }
 }

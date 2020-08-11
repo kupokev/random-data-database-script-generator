@@ -1,5 +1,4 @@
 ﻿using DataGenerator.Interfaces;
-using DataGenerator.Models;
 using RDSGConsole.Interfaces;
 using System;
 using System.IO;
