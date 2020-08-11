@@ -1,13 +1,11 @@
 ﻿using DataGenerator.Interfaces;
 using System;
-using System.Collections.Generic;
 using System.Json;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DataGenerator
 {
-    public class Generator
+    public class Generator : IDataGenerator
     {
         private readonly IObjectGeneratorService _objectGeneratorService;
 
@@ -27,8 +25,18 @@ namespace DataGenerator
                 throw new Exception("There was an issues parsing the provided JSON");
             }
 
+            var script = "";
 
-            return "";
+            try
+            {
+
+
+                return script;
+            }
+            catch
+            {
+                throw new Exception("There was an issues parsing the provided JSON");
+            }
         }
     }
 }

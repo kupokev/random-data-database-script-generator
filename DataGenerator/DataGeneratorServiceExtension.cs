@@ -10,6 +10,9 @@ namespace DataGenerator
         {
             // Thank you https://fmoralesdev.com/2019/09/20/extension-method-to-split-services-registrations-dependency-injection-net-core-part-iii/
 
+            // Main Service
+            services.AddScoped<IDataGenerator, Generator>();
+
             // Services
             services.AddScoped<IObjectGeneratorService, ObjectGeneratorService>();
 
