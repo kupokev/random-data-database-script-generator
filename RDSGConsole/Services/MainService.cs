@@ -24,14 +24,14 @@ namespace RDSGConsole.Services
 
             var json = GetJSON(@"F:\Repositories\My Projects\random-data-database-script-generator", @"manufacturing_template.json", cancellationToken);
 
-            //script = await _dataGenerator.GenerateSQL(json, cancellationToken);
+            script = await _dataGenerator.GenerateSQL(json, cancellationToken);
             
             System.Console.WriteLine(script);
 
             // Dump script to file
         }
 
-        public Database GetJSON(string path, string filename, CancellationToken cancellationToken)
+        public string GetJSON(string path, string filename, CancellationToken cancellationToken)
         {
             try
             {
@@ -46,7 +46,7 @@ namespace RDSGConsole.Services
                             IgnoreNullValues = true
                         };
 
-                        return JsonSerializer.Deserialize<Database>(File.ReadAllText(file), options);
+                        return File.ReadAllText(file);
                     }
                     else
                     {

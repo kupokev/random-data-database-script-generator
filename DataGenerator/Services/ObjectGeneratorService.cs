@@ -1,9 +1,8 @@
 ﻿using DataGenerator.Interfaces;
 using DataGenerator.Models;
-using System;
-using System.Collections.Generic;
-using System.Json;
+using System.IO;
 using System.Text;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -11,18 +10,18 @@ namespace DataGenerator.Services
 {
     public class ObjectGeneratorService : IObjectGeneratorService
     {
-        public async Task<Database> Convert(JsonValue json, CancellationToken cancellationToken)
+        public async Task<Database> Convert(string json, CancellationToken cancellationToken)
         {
-            var database = new Database();
-
-            if (json.ContainsKey("database"))
+            var options = new JsonSerializerOptions
             {
-                string b = json["database"]; 
+                IgnoreNullValues = true
+            };
 
-                // Get database name 
+            byte[] byteArray = Encoding.UTF8.GetBytes(json);
+            using(var stream = new MemoryStream(byteArray))
+            {
+                return await JsonSerializer.DeserializeAsync<Database>(stream, options, cancellationToken);
             }
-
-            return await Task.FromResult(database);
         }
     }
 }

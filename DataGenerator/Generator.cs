@@ -16,7 +16,7 @@ namespace DataGenerator
             _objectGeneratorService = objectGeneratorService;
         }
 
-        public async Task<string> GenerateSQL(JsonValue json, CancellationToken cancellationToken)
+        public async Task<string> GenerateSQL(string json, CancellationToken cancellationToken)
         {
             try
             {

@@ -6,6 +6,6 @@ namespace DataGenerator.Interfaces
 {
     public interface IDataGenerator
     {
-        Task<string> GenerateSQL(JsonValue json, CancellationToken cancellationToken);
+        Task<string> GenerateSQL(string json, CancellationToken cancellationToken);
     }
 }
