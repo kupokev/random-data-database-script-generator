@@ -14,8 +14,9 @@ namespace DataGenerator
             services.AddScoped<IDataGenerator, Generator>();
 
             // Services
+            services.AddScoped<IDatabaseGeneratorService, DatabaseGeneratorService>();
+            services.AddScoped<IDataGeneratorService, DataGeneratorService>();
             services.AddScoped<IObjectGeneratorService, ObjectGeneratorService>();
-
 
             return services;
         }
