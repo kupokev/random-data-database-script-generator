@@ -1,6 +1,6 @@
 ﻿using DataGenerator.Interfaces;
+using DataGenerator.Models;
 using System;
-using System.Json;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -32,10 +32,10 @@ namespace DataGenerator
                     script += Environment.NewLine;
                 }
 
-                //foreach (var table in database.tables.OrderBy(x => x.DependencyOrder))
-                //{
-
-                //}
+                foreach (var table in database.tables.OrderBy(x => x.DependencyOrder))
+                {
+                    script += CreateTableScript(table) + Environment.NewLine;
+                }
 
                 return await Task.FromResult(script);
 
@@ -44,6 +44,101 @@ namespace DataGenerator
             catch (Exception ex)
             {
                 throw new Exception("There was an issues parsing the provided JSON");
+            }
+        }
+
+        private string CreateTableScript(Table table)
+        {
+            if (string.IsNullOrWhiteSpace(table?.name)) throw new Exception("Table name not declared");
+
+            var script = string.Format(
+                "CREATE TABLE [{0}].[{1}] ({2}", 
+                string.IsNullOrWhiteSpace(table?.schema) ?  "dbo" : table.schema.Trim()
+                , table.name
+                , Environment.NewLine
+                );
+
+            var colCount = 1;
+
+            foreach (var column in table.columns)
+            {
+                script += CreateColumnScript(column, colCount++ == table.columns.Count()? true : false);
+            }
+
+            script += ");" + Environment.NewLine;
+
+            return script;
+        }
+
+        private string CreateColumnScript(Column column, bool isLast)
+        {
+            try
+            {
+                // Column Name
+                var script = string.Format("\t[{0}] ", column.name.Trim());
+
+                // Column Type
+                if (column.identity)
+                {
+                    // Max precision according to Microsoft documentation is 38
+                    if (column.scale > column.precision || column.precision == 0 || column.precision > 38)
+                    {
+                        script += "IDENTITY(1, 1) ";
+                    }
+                    else
+                    {
+                        script += string.Format("IDENTITY({0}, {1}) ", column.precision, column.scale);
+                    }
+                }
+                else
+                {
+                    switch (column.type.ToLower())
+                    {
+                        case "bit":
+                            script += string.Format("{0} ",
+                                column.type
+                                );
+
+                            break;
+
+                        case "char":
+                        case "varchar":
+                        case "nchar":
+                        case "nvarchar":
+                            script += string.Format("[{0}]({1}) ",
+                                column.type,
+                                column.size < 1 ? "1" : column.size > 4000 ? "MAX" : column.size.ToString()
+                                );
+                            
+                            break;
+
+                        case "decimal":
+                        case "numeric":
+                            script += string.Format("[{0}]({1}, {2}) ",
+                                column.type,
+                                column.precision < 1 ? 1 : column.precision > 38 ? 38 : column.precision,
+                                column.scale < 1 ? 1 : column.scale > 38 ? 38 : column.scale > column.precision ? column.precision : column.scale
+                                );
+
+                            break;
+
+                        default:
+                            break;
+                    }
+                }
+
+                // Nullable
+                script += column.nullable ? "NULL" : "NOT NULL";
+
+                // Ending ,
+                if (!isLast) script += @",";
+
+
+                return script + Environment.NewLine;
+            }
+            catch
+            {
+                return "";
             }
         }
     }

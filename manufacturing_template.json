@@ -14,12 +14,14 @@
         },
         {
           "name": "customer_name",
-          "type": "nvarchar(128)",
+          "type": "nvarchar",
+          "size":  128,
           "nullable": true
         },
         {
           "name": "customer_no",
-          "type": "nvarchar(16)",
+          "type": "nvarchar",
+          "size": 16,
           "nullable": true
         }
       ]
@@ -32,12 +34,15 @@
         {
           "name": "id",
           "type": "int",
+          "precision": 1,
+          "scale": 1,
           "nullable": false,
           "identity": true
         },
         {
           "name": "customer_no",
-          "type": "nvarchar(16)",
+          "type": "nvarchar",
+          "size": 16,
           "nullable": true,
           "generateFromTable": "Customer",
           "generateFromColumn": "customer_no"

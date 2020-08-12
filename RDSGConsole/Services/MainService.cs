@@ -24,8 +24,9 @@ namespace RDSGConsole.Services
             var json = GetJSON(@"F:\Repositories\My Projects\random-data-database-script-generator", @"manufacturing_template.json", cancellationToken);
 
             script = await _dataGenerator.GenerateSQL(json, cancellationToken);
-            
-            System.Console.WriteLine(script);
+
+            Console.WriteLine(Environment.NewLine);
+            Console.WriteLine(script);
 
             // Dump script to file
         }
