@@ -44,5 +44,13 @@ namespace DataGenerator.Services
 
             return script;
         }
+
+        public object GenerateObject(Database database)
+        {
+            // TO DO: Convert the database object into an object
+            // https://docs.microsoft.com/en-us/dotnet/api/system.dynamic.dynamicobject?view=netcore-3.1
+
+            return new object();
+        }
     }
 }
