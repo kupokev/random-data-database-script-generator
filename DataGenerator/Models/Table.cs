@@ -17,7 +17,13 @@ namespace DataGenerator.Models
         public int recordCount { get; set; }
 
         [JsonIgnore]
-        public int DependencyOrder { get; set; }
+        public string Schema
+        {
+            get
+            {
+                return string.IsNullOrWhiteSpace(schema) ? "dbo" : schema.Trim();
+            }
+        }
 
         public List<Column> columns { get; set; }
     }

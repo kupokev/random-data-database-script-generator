@@ -19,7 +19,7 @@ namespace DataGenerator.Services
                 script += Environment.NewLine;
             }
 
-            foreach (var table in database.tables.OrderBy(x => x.DependencyOrder))
+            foreach (var table in database.tables)
             {
                 script += CreateTableScript(table) + Environment.NewLine;
             }
@@ -31,12 +31,7 @@ namespace DataGenerator.Services
         {
             if (string.IsNullOrWhiteSpace(table?.name)) throw new Exception("Table name not declared");
 
-            var script = string.Format(
-                "CREATE TABLE [{0}].[{1}] ({2}",
-                string.IsNullOrWhiteSpace(table?.schema) ? "dbo" : table.schema.Trim()
-                , table.name
-                , Environment.NewLine
-                );
+            var script = table.GenerateHeaderSQL();
 
             var colCount = 1;
 
@@ -45,7 +40,7 @@ namespace DataGenerator.Services
                 script += column.GenerateSQL(colCount++ == table.columns.Count() ? true : false);
             }
 
-            script += ");" + Environment.NewLine;
+            script += table.GenerateFooterSQL();
 
             return script;
         }
