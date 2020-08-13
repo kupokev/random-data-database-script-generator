@@ -8,19 +8,19 @@
       "columns": [
         {
           "name": "id",
-          "type": "int",
+          "data_type": "int",
           "nullable": false,
           "identity": true
         },
         {
           "name": "customer_name",
-          "type": "nvarchar",
-          "size":  128,
+          "data_type": "nvarchar",
+          "size": 128,
           "nullable": true
         },
         {
           "name": "customer_no",
-          "type": "nvarchar",
+          "data_type": "nvarchar",
           "size": 16,
           "nullable": true
         }
@@ -33,7 +33,7 @@
       "columns": [
         {
           "name": "id",
-          "type": "int",
+          "data_type": "int",
           "precision": 1,
           "scale": 1,
           "nullable": false,
@@ -41,7 +41,7 @@
         },
         {
           "name": "customer_no",
-          "type": "nvarchar",
+          "data_type": "nvarchar",
           "size": 16,
           "nullable": true,
           "generateFromTable": "Customer",

@@ -1,5 +1,6 @@
 ﻿using DataGenerator.Interfaces;
 using DataGenerator.Models;
+using DataGenerator.Models.Extensions;
 using System;
 using System.Linq;
 
@@ -41,91 +42,12 @@ namespace DataGenerator.Services
 
             foreach (var column in table.columns)
             {
-                script += CreateColumnScript(column, colCount++ == table.columns.Count() ? true : false);
+                script += column.GenerateSQL(colCount++ == table.columns.Count() ? true : false);
             }
 
             script += ");" + Environment.NewLine;
 
             return script;
-        }
-
-        private string CreateColumnScript(Column column, bool isLast)
-        {
-            try
-            {
-                // Column Name
-                var script = string.Format("\t[{0}] ", column.name.Trim());
-
-                // Column Type
-                if (column.identity)
-                {
-                    // Max precision according to Microsoft documentation is 38
-                    if (column.scale > column.precision || column.precision == 0 || column.precision > 38)
-                    {
-                        script += "INT IDENTITY(1, 1) ";
-                    }
-                    else
-                    {
-                        script += string.Format("INT IDENTITY({0}, {1}) ", column.precision, column.scale);
-                    }
-                }
-                else
-                {
-                    switch (column.type.ToLower())
-                    {
-                        case "bigint":
-                        case "bit":
-                        case "date":
-                        case "datetime":
-                        case "float":
-                        case "int":
-                        case "smallint":
-                        case "tinyint":
-                        case "uniqueidentifier":
-                            script += string.Format("{0} ",
-                                column.type
-                                );
-
-                            break;
-
-                        case "char":
-                        case "varchar":
-                        case "nchar":
-                        case "nvarchar":
-                            script += string.Format("[{0}]({1}) ",
-                                column.type,
-                                column.size < 1 ? "1" : column.size > 4000 ? "MAX" : column.size.ToString()
-                                );
-
-                            break;
-
-                        case "decimal":
-                        case "numeric":
-                            script += string.Format("[{0}]({1}, {2}) ",
-                                column.type,
-                                column.precision < 1 ? 1 : column.precision > 38 ? 38 : column.precision,
-                                column.scale < 1 ? 1 : column.scale > 38 ? 38 : column.scale > column.precision ? column.precision : column.scale
-                                );
-
-                            break;
-
-                        default:
-                            break;
-                    }
-                }
-
-                // Nullable
-                script += column.identity || !column.nullable ? "NOT NULL" : "NULL";
-
-                // Ending ,
-                if (!isLast) script += @",";
-
-                return script + Environment.NewLine;
-            }
-            catch
-            {
-                return "";
-            }
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using DataGenerator.Interfaces;
 using DataGenerator.Models;
-using System;
 
 namespace DataGenerator.Services
 {
