@@ -1,4 +1,5 @@
 ﻿using DataGenerator.Models;
+using System.Collections.Generic;
 
 namespace DataGenerator.Interfaces
 {

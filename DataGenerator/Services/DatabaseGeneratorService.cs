@@ -2,6 +2,8 @@
 using DataGenerator.Models;
 using DataGenerator.Models.Extensions;
 using System;
+using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 
 namespace DataGenerator.Services
@@ -45,12 +47,24 @@ namespace DataGenerator.Services
             return script;
         }
 
-        public object GenerateObject(Database database)
-        {
-            // TO DO: Convert the database object into an object
-            // https://docs.microsoft.com/en-us/dotnet/api/system.dynamic.dynamicobject?view=netcore-3.1
+        //public object GenerateObject(Database database)
+        //{
+        //    // TO DO: Convert the database object into an object
+        //    foreach(var table in database.tables)
+        //    {
+        //        var dbo = new DynamicTable();
 
-            return new object();
-        }
+        //        foreach(var column in table.columns)
+        //        {
+        //            dbo.Add(column.name, )
+        //        }
+        //    }
+
+            
+
+        //    return new object();
+        //}
+
+        
     }
 }
