@@ -17,7 +17,7 @@ namespace DataGenerator.Models
         public int recordCount { get; set; }
 
         [JsonIgnore]
-        public DataRow[] Rows { get; set; }
+        public object[,] Rows { get; set; }
 
         [JsonIgnore]
         public string Schema

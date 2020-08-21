@@ -22,7 +22,7 @@ namespace DataGenerator.Services
             {
                 // Populate table with data
                 table.Rows = PopulateTable(table);
-                
+
                 // Add object to the script
 
             }
@@ -30,33 +30,64 @@ namespace DataGenerator.Services
             return script;
         }
 
-        private DataRow[] PopulateTable(Table table)
+        private object[,] PopulateTable(Table table)
         {
-            var values = new DataRow[table.recordCount];
+            // Array of values
+            var values = new object[table.recordCount + 1, table.columns.Count];
 
-            // Build data rows
-            dynamic row = new DataRow();
-
-            foreach (var column in table.columns)
+            // Add column Headers (Row 0)
+            for (int i = 0; i < table.columns.Count; i++)
             {
-                switch(column.data_type)
-                {
-                    case "bigint":
-                        row.AddProperty(column.name, column.IsNullable ? (Int64?)null : (Int64)0);
-                        break;
-
-                    case "char":
-                    case "varchar":
-                    case "nchar":
-                    case "nvarchar":
-                        row.AddProperty(column.name, "");
-                        break;
-                }
+                values[0, i] = table.columns[i].name;
             }
 
-            for (int i = 0; i < table.recordCount; i++)
+            // Add row data (Start Row 1)
+            for (int i = 1; i <= table.recordCount; i++)
             {
-                values[i] = row;
+                for (int j = 0; j < table.columns.Count; j++)
+                {
+                    switch (table.columns[j].data_type)
+                    {
+                        case "bigint":
+                            values[i, j] = table.columns[j].IsNullable ? (Int64?)null : (Int64)0;
+                            break;
+
+                        case "bit":
+                            values[i, j] = table.columns[j].IsNullable ? (bool?)null : false;
+                            break;
+
+                        case "char":
+                        case "varchar":
+                        case "nchar":
+                        case "nvarchar":
+                            values[i, j] = table.columns[j].IsNullable ? null : "";
+                            break;
+
+                        case "date":
+                        case "datetime":
+                        case "datetime2":
+                            values[i, j] = table.columns[j].IsNullable ? (DateTime?)null : DateTime.Parse("1900-01-01");
+                            break;
+
+                        case "decimal":
+                        case "money":
+                        case "numeric":
+                        case "smallmoney":
+                            values[i, j] = table.columns[j].IsNullable ? (decimal?)null : (decimal)0;
+                            break;
+
+                        case "float":
+                            values[i, j] = table.columns[j].IsNullable ? (double?)null : (double)0;
+                            break;
+
+                        case "int":
+                            values[i, j] = table.columns[j].IsNullable ? (int?)null : (int)0;
+                            break;
+
+                        default:
+                            throw new Exception(string.Format("{0} is an unsupported data type", table.columns[j].data_type));
+                    }
+                }
             }
 
             // Populate Data in rows
@@ -64,6 +95,8 @@ namespace DataGenerator.Services
             {
 
             }
+
+            table.Rows = values;
 
             return values;
         }
