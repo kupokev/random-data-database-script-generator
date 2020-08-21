@@ -1,7 +1,6 @@
 ﻿using DataGenerator.Interfaces;
 using DataGenerator.Models;
-using System.Collections.Generic;
-using System.Dynamic;
+using System;
 
 namespace DataGenerator.Services
 {
@@ -16,90 +15,57 @@ namespace DataGenerator.Services
 
         public string GenerateScript(Database database)
         {
-            //var dbo = _databaseGenerator.GenerateObject(database);
-
             var script = "";
 
             //Traverse dbo to get all the tables
             foreach (var table in database.tables)
             {
-                var dbo = new DynamicTable();
-
-                foreach (var column in table.columns)
-                {
-                    dbo.Add(column.name, PopulateColumn(column, table.recordCount));
-                }
-
+                // Populate table with data
+                table.Rows = PopulateTable(table);
+                
                 // Add object to the script
-
 
             }
 
             return script;
         }
 
-        private List<object> PopulateColumn(Column column, int records)
+        private DataRow[] PopulateTable(Table table)
         {
-            var values = new List<object>();
+            var values = new DataRow[table.recordCount];
 
-            for (int i = 0; i < records; i++)
+            // Build data rows
+            dynamic row = new DataRow();
+
+            foreach (var column in table.columns)
             {
-                values.Add(1);
-            }
-
-            return values;
-        }
-
-        private class DynamicTable : DynamicObject
-        {
-            // https://docs.microsoft.com/en-us/dotnet/api/system.dynamic.dynamicobject?view=netcore-3.1
-
-            // The inner dictionary.
-            Dictionary<string, object> dictionary = new Dictionary<string, object>();
-
-            // This property returns the number of elements
-            // in the inner dictionary.
-            public int Count
-            {
-                get
+                switch(column.data_type)
                 {
-                    return dictionary.Count;
+                    case "bigint":
+                        row.AddProperty(column.name, column.IsNullable ? (Int64?)null : (Int64)0);
+                        break;
+
+                    case "char":
+                    case "varchar":
+                    case "nchar":
+                    case "nvarchar":
+                        row.AddProperty(column.name, "");
+                        break;
                 }
             }
 
-            // If you try to get a value of a property
-            // not defined in the class, this method is called.
-            public override bool TryGetMember(
-                GetMemberBinder binder, out object result)
+            for (int i = 0; i < table.recordCount; i++)
             {
-                // Converting the property name to lowercase
-                // so that property names become case-insensitive.
-                string name = binder.Name.ToLower();
-
-                // If the property name is found in a dictionary,
-                // set the result parameter to the property value and return true.
-                // Otherwise, return false.
-                return dictionary.TryGetValue(name, out result);
+                values[i] = row;
             }
 
-            // If you try to set a value of a property that is
-            // not defined in the class, this method is called.
-            public override bool TrySetMember(
-                SetMemberBinder binder, object value)
+            // Populate Data in rows
+            foreach (var column in table.columns)
             {
-                // Converting the property name to lowercase
-                // so that property names become case-insensitive.
-                dictionary[binder.Name.ToLower()] = value;
 
-                // You can always add a value to a dictionary,
-                // so this method always returns true.
-                return true;
             }
 
-            public void Add(string name, object value)
-            {
-                dictionary[name.ToLower()] = value;
-            }
+            return values;
         }
     }
 }
