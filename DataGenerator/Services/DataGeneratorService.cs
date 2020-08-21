@@ -81,7 +81,8 @@ namespace DataGenerator.Services
                             break;
 
                         case "int":
-                            values[i, j] = table.columns[j].IsNullable ? (int?)null : (int)0;
+                            // If IDENTITY, set the column data
+                            values[i, j] = table.columns[j].IsNullable ? (int?)null : table.columns[j].identity ? (int)i : (int)0;
                             break;
 
                         default:
@@ -90,10 +91,28 @@ namespace DataGenerator.Services
                 }
             }
 
-            // Populate Data in rows
-            foreach (var column in table.columns)
-            {
+            var value = 15;
 
+            if (values[1, 0].GetType() == value.GetType())
+            {
+                values[1, 0] = value;
+            }
+            else
+            {
+                Console.WriteLine("failed");
+            }
+
+
+            // Populate Data in rows
+            for (int i = 0; i < table.columns.Count; i++)
+            {
+                // populate array (Eventually data generation method)
+                var generatedData = new object[table.recordCount];
+
+                for (int j = 0; j < table.recordCount; j++)
+                {
+                    values[j + 1, i] = generatedData[j];
+                }
             }
 
             table.Rows = values;
